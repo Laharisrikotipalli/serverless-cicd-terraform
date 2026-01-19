@@ -26,12 +26,12 @@ resource "aws_iam_role_policy_attachment" "basic_execution" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
-
 resource "aws_lambda_function" "this" {
-  function_name = var.function_name
-  role          = aws_iam_role.lambda_role.arn
-  handler       = var.handler
-  runtime       = var.runtime
+  function_name_prefix = "${var.function_name}-"
+
+  role    = aws_iam_role.lambda_role.arn
+  handler = var.handler
+  runtime = var.runtime
 
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
@@ -47,3 +47,4 @@ resource "aws_lambda_function" "this" {
 
   tags = var.tags
 }
+
