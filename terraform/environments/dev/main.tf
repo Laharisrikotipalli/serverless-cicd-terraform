@@ -36,6 +36,7 @@ module "api_gateway" {
   api_name             = "hello-api-dev"
   stage_name           = local.environment
   lambda_function_arn  = module.lambda.function_arn
+  lambda_function_name = module.lambda.function_name
   tags                 = local.tags
 }
 
