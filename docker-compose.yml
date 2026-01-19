@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  lambda-local:
+    image: public.ecr.aws/lambda/python:3.11
+    container_name: lambda-local-test
+    volumes:
+      - ./lambda-src/hello_function:/var/task
+    command: app.lambda_handler
+    environment:
+      ENVIRONMENT: local
+      VERSION: local
