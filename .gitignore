@@ -1,0 +1,20 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Lambda build artifacts
+*.zip
+.terraform-lambda/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+lambda.zip
+.terraform.lock.hcl
+*.zip
+.terraform-lambda/
+.terraform-lambda/
+*.zip

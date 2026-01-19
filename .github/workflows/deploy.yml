@@ -1,0 +1,101 @@
+name: Serverless CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - feature/*
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  # ----------------------------
+  # DEV (auto deploy)
+  # ----------------------------
+  deploy-dev:
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init (DEV)
+        run: terraform -chdir=terraform/environments/dev init
+
+      - name: Terraform Apply (DEV)
+        run: terraform -chdir=terraform/environments/dev apply -auto-approve
+
+  # ----------------------------
+  # STAGING (manual approval)
+  # ----------------------------
+  deploy-staging:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://console.aws.amazon.com/apigateway
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init (STAGING)
+        run: terraform -chdir=terraform/environments/staging init
+
+      - name: Terraform Apply (STAGING)
+        run: terraform -chdir=terraform/environments/staging apply -auto-approve
+
+  # ----------------------------
+  # PROD (blue/green)
+  # ----------------------------
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+      url: https://console.aws.amazon.com/apigateway
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init (PROD)
+        run: terraform -chdir=terraform/environments/prod init
+
+      - name: Terraform Apply (PROD – Blue/Green)
+        run: terraform -chdir=terraform/environments/prod apply -auto-approve
