@@ -11,10 +11,9 @@ env:
   AWS_REGION: us-east-1
 
 jobs:
-  # ----------------------------
+
   # DEV (auto deploy)
-  # ----------------------------
-  deploy-dev:
+    deploy-dev:
     if: startsWith(github.ref, 'refs/heads/feature/')
     runs-on: ubuntu-latest
     environment: dev
