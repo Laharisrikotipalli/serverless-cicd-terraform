@@ -1,25 +1,21 @@
 data "aws_region" "current" {}
 
-# ------------------------
-# REST API
-# ------------------------
 resource "aws_api_gateway_rest_api" "this" {
   name = var.api_name
   tags = var.tags
 }
 
-# ------------------------
+
 # /hello resource
-# ------------------------
+
 resource "aws_api_gateway_resource" "hello" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   parent_id   = aws_api_gateway_rest_api.this.root_resource_id
   path_part   = "hello"
 }
 
-# ------------------------
 # GET /hello method
-# ------------------------
+
 resource "aws_api_gateway_method" "get_hello" {
   rest_api_id      = aws_api_gateway_rest_api.this.id
   resource_id      = aws_api_gateway_resource.hello.id
@@ -28,9 +24,9 @@ resource "aws_api_gateway_method" "get_hello" {
   api_key_required = true
 }
 
-# ------------------------
+
 # Lambda proxy integration
-# ------------------------
+
 resource "aws_api_gateway_integration" "lambda" {
   rest_api_id             = aws_api_gateway_rest_api.this.id
   resource_id             = aws_api_gateway_resource.hello.id
@@ -41,12 +37,10 @@ resource "aws_api_gateway_integration" "lambda" {
   uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${var.lambda_function_arn}/invocations"
 }
 
-# ------------------------
+
 # Lambda permission
-# IMPORTANT:
-# - Use FUNCTION NAME (not ARN)
-# - Works for blue/green aliases
-# ------------------------
+
+
 resource "aws_lambda_permission" "allow_apigw" {
   statement_id  = "AllowAPIGatewayInvokeAlias"
   action        = "lambda:InvokeFunction"
@@ -56,10 +50,10 @@ resource "aws_lambda_permission" "allow_apigw" {
 }
 
 
-# ------------------------
+
 # Deployment
 # FORCE redeploy on alias change
-# ------------------------
+
 resource "aws_api_gateway_deployment" "this" {
   rest_api_id = aws_api_gateway_rest_api.this.id
 
@@ -77,27 +71,27 @@ resource "aws_api_gateway_deployment" "this" {
   }
 }
 
-# ------------------------
+
 # Stage
-# ------------------------
+
 resource "aws_api_gateway_stage" "this" {
   rest_api_id   = aws_api_gateway_rest_api.this.id
   deployment_id = aws_api_gateway_deployment.this.id
   stage_name    = var.stage_name
   tags          = var.tags
 }
-# ------------------------
+
 # API Key
-# ------------------------
+
 resource "aws_api_gateway_api_key" "this" {
   name    = "${var.api_name}-key"
   enabled = true
   tags    = var.tags
 }
 
-# ------------------------
+
 # Usage Plan
-# ------------------------
+
 resource "aws_api_gateway_usage_plan" "this" {
   name = "${var.api_name}-usage-plan"
 
@@ -109,9 +103,8 @@ resource "aws_api_gateway_usage_plan" "this" {
   tags = var.tags
 }
 
-# ------------------------
 # Usage Plan Key attachment
-# ------------------------
+
 resource "aws_api_gateway_usage_plan_key" "this" {
   key_id        = aws_api_gateway_api_key.this.id
   key_type      = "API_KEY"

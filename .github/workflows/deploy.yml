@@ -11,9 +11,7 @@ env:
   AWS_REGION: us-east-1
 
 jobs:
-  # ----------------------------
-  # DEV (auto deploy)
-  # ----------------------------
+ 
   deploy-dev:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/heads/feature/')
     runs-on: ubuntu-latest
@@ -39,9 +37,7 @@ jobs:
       - name: Terraform Apply (DEV)
         run: terraform -chdir=terraform/environments/dev apply -auto-approve
 
-  # ----------------------------
-  # STAGING (manual approval)
-  # ----------------------------
+
   deploy-staging:
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -69,9 +65,6 @@ jobs:
       - name: Terraform Apply (STAGING)
         run: terraform -chdir=terraform/environments/staging apply -auto-approve
 
-  # ----------------------------
-  # PROD (blue/green)
-  # ----------------------------
   deploy-prod:
     if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
     needs: deploy-staging
