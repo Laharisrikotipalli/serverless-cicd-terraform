@@ -2,6 +2,7 @@
 
 A production-ready Serverless CI/CD pipeline built using Terraform and GitHub Actions to deploy AWS Lambda and API Gateway across Dev, Staging, and Production environments with Blue/Green deployment strategy.
 
+----
 ## Project Overview
 
 This project demonstrates an end-to-end Serverless CI/CD pipeline using Infrastructure as Code (IaC) principles.
@@ -14,6 +15,7 @@ The pipeline automates:
 
 Each environment exposes a single API Gateway endpoint (`GET /hello`) that triggers its respective AWS Lambda function.
 
+----
 ## Architecture Overview
 
 The architecture follows a serverless and fully automated CI/CD approach:
@@ -28,12 +30,14 @@ The architecture follows a serverless and fully automated CI/CD approach:
 
 Production uses a Blue/Green deployment strategy with Lambda aliases to enable safe traffic switching.
 
+------
 ## Architecture Diagram
 
 The following diagram illustrates the complete CI/CD and serverless architecture implemented in this project.
 
 ![Architecture Diagram](docs/architecture.png)
 
+-----
 ## Technologies Used
 
 - AWS Lambda
@@ -43,6 +47,8 @@ The following diagram illustrates the complete CI/CD and serverless architecture
 - Amazon S3 (Terraform remote backend)
 - Amazon DynamoDB (Terraform state locking)
 - Python 3.11
+
+-----
 ## Repository Structure
 
 The repository is organized using reusable Terraform modules and environment-specific configurations.
@@ -64,6 +70,8 @@ The repository is organized using reusable Terraform modules and environment-spe
 │   └── architecture.png
 └── README.md
 
+```
+------
 ## Environments
 
 The project is deployed across three isolated environments:
@@ -74,6 +82,7 @@ The project is deployed across three isolated environments:
 | Staging | Manual approval | Validation before production |
 | Prod | Blue/Green | Zero-downtime deployment |
 
+------
 ## CI/CD Pipeline Flow
 
 The CI/CD pipeline is implemented using GitHub Actions and follows this flow:
@@ -85,6 +94,7 @@ The CI/CD pipeline is implemented using GitHub Actions and follows this flow:
 5. Staging deployment requires manual approval
 6. Production deployment uses Blue/Green strategy
 
+-----
 ## GitHub Actions Workflow Behavior
 
 The GitHub Actions workflow controls deployments based on branch rules:
@@ -94,6 +104,7 @@ The GitHub Actions workflow controls deployments based on branch rules:
 - Staging deployment requires **manual approval**
 - After approval, **Production** deployment is executed using Terraform
 
+------
 ## Secrets Configuration
 
 AWS credentials are securely managed using GitHub Secrets and are never hardcoded in the repository.
@@ -105,6 +116,7 @@ The following secrets are configured in the GitHub repository:
 
 These secrets are used by GitHub Actions to authenticate with AWS during Terraform deployments.
 
+------
 ## Terraform Remote Backend (S3 & DynamoDB)
 
 Terraform state is managed remotely to ensure safe and consistent deployments across environments.
@@ -113,6 +125,8 @@ Terraform state is managed remotely to ensure safe and consistent deployments ac
 - **Amazon DynamoDB** is used for state locking to prevent concurrent Terraform executions
 
 Each environment uses a separate Terraform state file stored in S3.
+
+-----
 ## S3 Backend Structure
 
 Terraform state files are organized in Amazon S3 by environment to maintain isolation.
@@ -125,7 +139,8 @@ serverless-cicd-terraform-state/
 │   └── terraform.tfstate
 └── prod/
     └── terraform.tfstate
-
+```
+-----
 ## API Gateway Configuration
 
 Each environment (Dev, Staging, Prod) has its own API Gateway REST API.
@@ -135,6 +150,7 @@ Each environment (Dev, Staging, Prod) has its own API Gateway REST API.
 - Separate stages are created for each environment
 - The default API Gateway invoke URL is used
 
+----
 ## Lambda Function Configuration
 
 AWS Lambda is used to implement the serverless backend logic.
@@ -145,6 +161,7 @@ AWS Lambda is used to implement the serverless backend logic.
 - Environment variables are used to indicate environment and version
 - Lambda functions are deployed and managed entirely using Terraform
 
+------
 ## Blue/Green Deployment (Production)
 
 The Production environment uses a Blue/Green deployment strategy to ensure zero downtime.
@@ -157,6 +174,7 @@ The Production environment uses a Blue/Green deployment strategy to ensure zero 
 - Traffic is shifted by updating the active alias
 - This allows instant rollback if issues occur
 
+------
 ## Deployment Verification
 
 After deployment, the setup is verified using the following steps:
@@ -167,9 +185,11 @@ After deployment, the setup is verified using the following steps:
 4. Invoke the API endpoint using the browser or curl
 
 Example API call:
-curl https://<api-id>.execute-api.us-east-1.amazonaws.com/prod/hello
+```curl https://<api-id>.execute-api.us-east-1.amazonaws.com/prod/hello
+```
 A successful response returns a JSON message indicating the environment and version.
 
+-----
 ## Required Screenshots
 
 The following screenshots are included as proof of successful implementation:
@@ -184,3 +204,17 @@ The following screenshots are included as proof of successful implementation:
 8. Successful API response from `/hello` endpoint
 9. S3 bucket containing Terraform state files
 10. DynamoDB table used for Terraform state locking
+
+------
+## Conclusion
+
+This project demonstrates a production-grade serverless CI/CD pipeline using Terraform and GitHub Actions.
+
+Key highlights include:
+- Fully automated infrastructure provisioning using Terraform
+- Secure and reliable Terraform state management using S3 and DynamoDB
+- Multi-environment deployment strategy (Dev, Staging, Prod)
+- Manual approval gate for Staging deployments
+- Zero-downtime Production deployments using Blue/Green strategy
+
+This setup reflects real-world DevOps and cloud engineering best practices.
