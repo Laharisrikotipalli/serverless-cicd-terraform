@@ -185,7 +185,8 @@ After deployment, the setup is verified using the following steps:
 4. Invoke the API endpoint using the browser or curl
 
 Example API call:
-```curl https://<api-id>.execute-api.us-east-1.amazonaws.com/prod/hello
+```
+curl https://<api-id>.execute-api.us-east-1.amazonaws.com/prod/hello
 ```
 A successful response returns a JSON message indicating the environment and version.
 
