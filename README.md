@@ -191,20 +191,50 @@ curl https://<api-id>.execute-api.us-east-1.amazonaws.com/prod/hello
 A successful response returns a JSON message indicating the environment and version.
 
 -----
-## Required Screenshots
+## Screenshots
 
 The following screenshots are included as proof of successful implementation:
 
-1. GitHub Actions workflow showing successful pipeline execution
-2. Dev environment deployment success
-3. Staging environment manual approval and deployment
-4. Production deployment with Blue/Green strategy
-5. API Gateway stages for dev, staging, and prod
-6. Lambda functions list for all environments
-7. Lambda aliases showing active Green version in production
-8. Successful API response from `/hello` endpoint
-9. S3 bucket containing Terraform state files
-10. DynamoDB table used for Terraform state locking
+## 📸 Screenshots
+
+Below are key screenshots demonstrating the complete Serverless CI/CD pipeline implementation, infrastructure provisioning, and deployments across environments.
+
+### 1. Manual Approval Flow (Staging Gate)
+![Manual approval flow](docs/screenshots/1-Manual approval flow (staging gate).png)
+
+### 2. Full Successful Pipeline (Staging → Production)
+![Full successful pipeline](docs/screenshots/2-Full successful pipeline (staging → prod).png)
+
+### 3. API Gateway – Production Stage
+![API Gateway PROD stage](docs/screenshots/3-API Gateway – PROD stage.png)
+
+### 4. API Gateway – Staging Stage
+![API Gateway STAGING stage](docs/screenshots/4-API Gateway – STAGING stage.png)
+
+### 5. API Gateway – Development Stage
+![API Gateway DEV stage](docs/screenshots/5-API Gateway – DEV stage.png)
+
+### 6. Lambda Blue/Green Deployment (Production)
+![Lambda blue green](docs/screenshots/6-Lambda-blue-green.png)
+
+### 7. Lambda Functions List
+![Lambda functions list](docs/screenshots/7-Lambda – Functions list.png)
+
+### 8. Terminal – Live API Call (Production)
+![Live API call](docs/screenshots/8-Terminal – Live API call (PROD).png)
+
+### 9. S3 Backend – Bucket Root
+![S3 bucket root](docs/screenshots/9-Bucket root.png)
+
+### 10. Terraform State – Development
+![Terraform state dev](docs/screenshots/10-dev.terraform.state.png)
+
+### 11. Terraform State – Production
+![Terraform state prod](docs/screenshots/11-prod.terraformstate.png)
+
+### 12. Terraform State – Staging
+![Terraform state staging](docs/screenshots/12-staging.terraformstate.png)
+
 
 -----
 
