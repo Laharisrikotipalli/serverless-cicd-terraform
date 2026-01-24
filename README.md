@@ -218,5 +218,3 @@ Key highlights include:
 - Multi-environment deployment strategy (Dev, Staging, Prod)
 - Manual approval gate for Staging deployments
 - Zero-downtime Production deployments using Blue/Green strategy
-
-Th
