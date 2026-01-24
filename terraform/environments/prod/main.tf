@@ -20,9 +20,7 @@ locals {
   }
 }
 
-# -----------------------
 # Lambda
-# -----------------------
 module "lambda" {
   source = "../../modules/lambda"
 
@@ -33,18 +31,14 @@ module "lambda" {
   tags           = local.tags
 }
 
-# -----------------------
 # Lambda Alias (GREEN)
-# -----------------------
 resource "aws_lambda_alias" "green" {
   name             = "green"
   function_name    = module.lambda.function_name
   function_version = module.lambda.version
 }
 
-# -----------------------
 # API Gateway
-# -----------------------
 module "api_gateway" {
   source = "../../modules/api-gateway"
 
