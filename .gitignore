@@ -4,7 +4,7 @@
 *.tfstate.*
 .terraform.lock.hcl
 
-# Lambda build artifacts
+## Lambda build artifacts
 *.zip
 .terraform-lambda/
 
