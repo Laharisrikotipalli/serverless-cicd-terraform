@@ -206,7 +206,8 @@ The following screenshots are included as proof of successful implementation:
 9. S3 bucket containing Terraform state files
 10. DynamoDB table used for Terraform state locking
 
-------
+-----
+
 ## Conclusion
 
 This project demonstrates a production-grade serverless CI/CD pipeline using Terraform and GitHub Actions.
@@ -218,4 +219,4 @@ Key highlights include:
 - Manual approval gate for Staging deployments
 - Zero-downtime Production deployments using Blue/Green strategy
 
-This setup reflects real-world DevOps and cloud engineering best practices.
+Th

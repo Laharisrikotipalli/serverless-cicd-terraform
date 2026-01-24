@@ -66,7 +66,7 @@ resource "aws_lambda_function" "this" {
   tags = var.tags
 }
 
-# CloudWatch Alarm
+# CloudWatch Alarm.
 
 resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   alarm_name          = "${aws_lambda_function.this.function_name}-errors"
